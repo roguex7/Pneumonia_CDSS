@@ -1,0 +1,6 @@
+path: Z:\Projects\Pneumonia_CDSS # dataset root dir
+train: dataset/images
+val: dataset/images
+
+nc: 1
+names: ['pneumonia']
