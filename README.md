@@ -14,7 +14,7 @@ The project utilized the **RSNA Pneumonia Detection Challenge** dataset. The raw
 
 * **Challenge:** DICOM files contain complex metadata and high-bit-depth pixel arrays.
 * **Solution:** I engineered a preprocessing pipeline using `pydicom` and `OpenCV` to extract the pixel data, normalize it, and convert thousands of images into high-quality **PNG** format.
-<img width="1692" height="880" alt="image" src="https://github.com/user-attachments/assets/5016d6c7-f0b5-430f-bbe2-cdbcd8a8855b" />
+<img width="1703" height="885" alt="Screenshot 2026-01-18 205606" src="https://github.com/user-attachments/assets/48d34b30-1408-4de6-9397-9ef2c3f13eb0" />
 <img width="1692" height="880" alt="Screenshot 2026-01-18 205751" src="https://github.com/user-attachments/assets/15909b81-c900-4f4c-af49-c5efc731221b" />
 
 ### 2. Creating a Balanced Dataset (The 500/500 Split)
