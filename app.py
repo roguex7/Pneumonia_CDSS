@@ -1,28 +1,39 @@
+# --- MUST BE THE VERY FIRST LINES ---
+import pathlib
+from pathlib import Path
+import platform
+
+# Force WindowsPath to act like PosixPath on Linux
+pathlib.WindowsPath = pathlib.PosixPath
+# ------------------------------------
+
 import streamlit as st
 import torch
 from PIL import Image
 import os
-import pathlib
-from pathlib import Path
 
-# --- 1. Page Config ---
+# --- 1. Page Configuration ---
 st.set_page_config(page_title="Pneumonia Detection CDSS", layout="wide")
+
 st.title("🫁 Pneumonia Detection - Clinical Decision Support System")
 st.markdown("---")
 
-# --- 2. Load Model (Cloud Optimized) ---
+# --- 2. Load Model (Robust Loading) ---
 @st.cache_resource
 def load_model():
-    # Use 'ultralytics/yolov5' to load from the web, not 'source=local'
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt', force_reload=True) 
+    # Force reload ensures we aren't using a broken cached version
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt', force_reload=True)
     return model
 
 try:
-    model = load_model()
+    with st.spinner("Loading AI Model... (This might take a minute)"):
+        model = load_model()
     st.sidebar.success("✅ Model Loaded Successfully")
 except Exception as e:
     st.sidebar.error("Model failed to load.")
     st.error(f"Error: {e}")
+    # Show technical details for debugging
+    st.code(f"System: {platform.system()}\nPathlib Fix Applied: {pathlib.WindowsPath == pathlib.PosixPath}")
 
 # --- 3. Sidebar Controls ---
 st.sidebar.header("🔬 Clinical Settings")
@@ -38,7 +49,7 @@ if uploaded_file is not None:
     
     with col1:
         st.subheader("🖼️ Patient X-ray")
-        st.image(img, width="stretch", caption="Original Upload") # Updated for 2026 standards
+        st.image(img, width="stretch", caption="Original Upload")
 
     with col2:
         st.subheader("🎯 AI Analysis")
@@ -70,4 +81,3 @@ if uploaded_file is not None:
         )
     else:
         st.success("✅ No pneumonia detected at this threshold.")
-
