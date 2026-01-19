@@ -82,18 +82,19 @@ Below is a verification grid showing the model's performance on unseen validatio
 
 ## ⚙️ How to Run Locally
 1.  Clone the repository.
-2.  Install dependencies:
+2.  Dataset link:
+    ```bash
+    https://www.kaggle.com/c/rsna-pneumonia-detection-challenge/data
+    ```
+3.  Install dependencies:
     ```bash
     pip install -r requirements.txt
     ```
-3.  Launch the application:
+4.  Launch the application:
     ```bash
     streamlit run app.py
     ```
-4.  Dataset link:
-    ```bash
-    https://www.kaggle.com/c/rsna-pneumonia-detection-challenge/data
-    ``` 
+    
 ---
 **Developed by:** Annant R Gautam
 **Dataset Credit:** Radiological Society of North America (RSNA)
