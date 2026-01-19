@@ -2,7 +2,7 @@
 
 **A full-stack AI solution transforming raw medical imaging data into a real-time diagnostic tool for radiologists.**
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]((https://pneumoniacdss.streamlit.app/))
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pneumoniacdss.streamlit.app/)
 
 
 ## 📌 Executive Summary
@@ -97,14 +97,14 @@ Below is a verification grid showing the model's performance on unseen validatio
     ```bash
     streamlit run app.py
     ```
-    
+
 ## 🚀 Deployment
 This project is deployed using a **CI/CD pipeline** with **Streamlit Community Cloud**.
 - **Source:** The app is directly connected to this GitHub repository.
 - **Updates:** Pushing changes to the `main` branch automatically triggers a redeploy.
 - **Environment:** Linux-based cloud runner with `libgl1` dependencies managed via `packages.txt`.
 
-🔗 **Live Demo:** [Click here to launch the CDSS]((https://pneumoniacdss.streamlit.app/))    
+🔗 **Live Demo:** [Click here to launch the CDSS](https://pneumoniacdss.streamlit.app/)
 ---
 **Developed by:** Annant R Gautam
 **Dataset Credit:** Radiological Society of North America (RSNA)
