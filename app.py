@@ -14,7 +14,7 @@ if platform.system() == 'Linux':
 st.set_page_config(page_title="Pneumonia CDSS (V1 Legacy)", layout="wide")
 
 # --- 2. HEADER & STYLING ---
-st.title("🫁 Pneumonia CDSS - V1 Legacy Model")
+st.title("🫁 Pneumonia- Clinical Desicion Support System(v1)")
 st.markdown("""
 <style>
     .reportview-container { margin-top: -2em; }
@@ -114,3 +114,4 @@ if model:
 
 else:
     st.warning("⚠️ Application is waiting for the model to load.")
+
