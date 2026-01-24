@@ -1,16 +1,7 @@
-# --- MUST BE THE VERY FIRST LINES ---
-import pathlib
-from pathlib import Path
-import platform
-
-# Force WindowsPath to act like PosixPath on Linux
-pathlib.WindowsPath = pathlib.PosixPath
-# ------------------------------------
-
 import streamlit as st
-import torch
 from PIL import Image
-import os
+from ultralytics import YOLO  # <--- Using the installed library instead of torch.hub
+import pandas as pd
 
 # --- 1. Page Configuration ---
 st.set_page_config(page_title="Pneumonia Detection CDSS", layout="wide")
@@ -18,22 +9,20 @@ st.set_page_config(page_title="Pneumonia Detection CDSS", layout="wide")
 st.title("🫁 Pneumonia Detection - Clinical Decision Support System")
 st.markdown("---")
 
-# --- 2. Load Model (Robust Loading) ---
+# --- 2. Load Model (Offline / Safe Mode) ---
 @st.cache_resource
 def load_model():
-    # Force reload ensures we aren't using a broken cached version
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt', force_reload=True)
+    # This loads directly from the file 'best.pt' without downloading anything from GitHub
+    model = YOLO('best.pt')
     return model
 
 try:
-    with st.spinner("Loading AI Model... (This might take a minute)"):
+    with st.spinner("Loading AI Model..."):
         model = load_model()
     st.sidebar.success("✅ Model Loaded Successfully")
 except Exception as e:
     st.sidebar.error("Model failed to load.")
     st.error(f"Error: {e}")
-    # Show technical details for debugging
-    st.code(f"System: {platform.system()}\nPathlib Fix Applied: {pathlib.WindowsPath == pathlib.PosixPath}")
 
 # --- 3. Sidebar Controls ---
 st.sidebar.header("🔬 Clinical Settings")
@@ -49,27 +38,40 @@ if uploaded_file is not None:
     
     with col1:
         st.subheader("🖼️ Patient X-ray")
-        st.image(img, width="stretch", caption="Original Upload")
+        st.image(img, width=None, caption="Original Upload", use_container_width=True)
 
     with col2:
         st.subheader("🎯 AI Analysis")
-        # Run inference
-        model.conf = conf_threshold
-        results = model(img)
         
-        # Render and Show
-        results.render()
-        res_img = Image.fromarray(results.ims[0])
-        st.image(res_img, width="stretch", caption=f"Detections at {conf_threshold*100}% Confidence")
+        # Run inference using the modern Ultralytics API
+        results = model.predict(img, conf=conf_threshold)
+        
+        # Plot results (returns a numpy array)
+        res_plotted = results[0].plot()
+        st.image(res_plotted, caption=f"Detections at {conf_threshold*100:.0f}% Confidence", use_container_width=True)
 
     # --- 5. Clinical Report & Export ---
     st.markdown("---")
     st.subheader("📋 Clinical Report")
-    df = results.pandas().xyxy[0]
     
-    if not df.empty:
+    # Extract data from the new Ultralytics result format
+    boxes = results[0].boxes
+    if boxes:
+        # Create a clean DataFrame
+        data = []
+        for box in boxes:
+            data.append({
+                "Class": model.names[int(box.cls)],
+                "Confidence": float(box.conf),
+                "xmin": float(box.xyxy[0][0]),
+                "ymin": float(box.xyxy[0][1]),
+                "xmax": float(box.xyxy[0][2]),
+                "ymax": float(box.xyxy[0][3])
+            })
+        df = pd.DataFrame(data)
+        
         st.warning(f"⚠️ Findings: {len(df)} opacity regions detected.")
-        st.dataframe(df[['name', 'confidence', 'xmin', 'ymin', 'xmax', 'ymax']], use_container_width=True)
+        st.dataframe(df, use_container_width=True)
         
         # CSV Download
         csv = df.to_csv(index=False).encode('utf-8')
