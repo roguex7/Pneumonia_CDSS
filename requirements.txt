@@ -1,12 +1,9 @@
+opencv-python-headless
 streamlit
-ultralytics
 torch
 torchvision
 pandas
 Pillow
-opencv-python-headless
-matplotlib
-numpy
 requests
 pyyaml
 tqdm
