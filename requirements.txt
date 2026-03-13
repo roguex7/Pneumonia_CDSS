@@ -1,48 +1,13 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Pneumonia CDSS – Python Dependencies
-# Strategy: >=current_stable, <next_major
-#
-# ✅ Gets security/bug-fix patches automatically
-# ✅ Protected from silent breaking changes on major version bumps
-# ✅ Reproducible across every Streamlit Cloud cold start
-#
-# Key dependency decisions:
-#
-#   NO ultralytics package:
-#     best.pt is a YOLOv5 model. ultralytics (YOLOv8 API) explicitly rejects
-#     YOLOv5 weights. Model is loaded via torch.hub which downloads the
-#     correct ultralytics/yolov5 repo automatically at first cold start.
-#
-#   NO opencv-python-headless:
-#     torch.hub/yolov5 pulls in opencv-python (full build) as a transitive
-#     dependency. headless + full = pip conflict. The system lib it needs
-#     (libgthread-2.0.so.0) is satisfied by libglib2.0-0t64 in packages.txt.
-#
-#   numpy <2:
-#     NumPy 2.x has breaking C-API changes. YOLOv5 not yet confirmed
-#     compatible. Cap stays until upstream confirms support.
-#
-# Last reviewed: March 2026
-# ─────────────────────────────────────────────────────────────────────────────
-
-# ── Core ML ───────────────────────────────────────────────────────────────────
 torch>=2.10,<3
 torchvision>=0.25,<1
-
-# ── Numerical / Data ──────────────────────────────────────────────────────────
+ultralytics>=8.0,<9
 numpy>=1.24,<2
 pandas>=2.0,<3
 scipy>=1.10,<2
-
-# ── Visualisation ─────────────────────────────────────────────────────────────
 matplotlib>=3.7,<4
 seaborn>=0.12,<1
-
-# ── YOLOv5 Runtime (torch.hub transitive deps) ────────────────────────────────
 Pillow>=10.0,<12
 PyYAML>=6.0,<7
 requests>=2.28,<3
 tqdm>=4.65,<5
-
-# ── Streamlit App ─────────────────────────────────────────────────────────────
 streamlit>=1.28,<2
