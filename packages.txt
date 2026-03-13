@@ -15,6 +15,6 @@
 # but torch/torchvision native extensions may still link against them.
 # Declaring them explicitly makes the deployment deterministic and robust.
 # ─────────────────────────────────────────────────────────────────────────────
-libglib2.0-0
+libglib
 libgl1
 libgomp1
