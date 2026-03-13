@@ -1,3 +1,19 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Pneumonia CDSS – Streamlit Cloud System Packages
+#
+# Streamlit Cloud runs Debian Trixie.
+# ⚠️  CRITICAL naming — all three variants that DON'T work:
+#     "libglib"        → ❌ package does not exist
+#     "libglib2.0-0"   → ❌ renamed in Trixie, causes apt-get failure
+#     "libglib2.0-0t64"→ ✅ correct Trixie name (t64 = 64-bit time_t ABI)
+#
+# When apt-get fails, Streamlit Cloud aborts the ENTIRE install — Python
+# packages are never installed and the app crashes regardless of requirements.txt
+#
+# libglib2.0-0t64  → libgthread-2.0.so.0 required by opencv-python (via yolov5)
+# libgl1           → libGL.so.1 required by torchvision
+# libgomp1         → OpenMP runtime for PyTorch parallel CPU ops
+# ─────────────────────────────────────────────────────────────────────────────
 libglib2.0-0t64
 libgl1
 libgomp1
