@@ -1,13 +1,30 @@
-opencv-python-headless
-ultralytics
-streamlit
+# ─────────────────────────────────────────────────────────────────────────────
+# Pneumonia CDSS – Python Dependencies
+# Permanent fix: opencv-python → opencv-python-headless
+#
+# WHY: opencv-python (GUI build) links against libgthread-2.0.so.0 (libglib2.0)
+# and libGL, which are GTK/X11 GUI libraries absent on headless cloud servers
+# (Streamlit Cloud, Docker, etc.).  opencv-python-headless is the production-
+# correct build: identical API, zero GUI system-library dependencies.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Core ML / inference
 torch
 torchvision
-pandas
+
+# ✅ PERMANENT FIX: headless build — no libgthread / libGL / libGTK required
+opencv-python-headless
+
+# YOLOv5 runtime dependencies
 Pillow
+numpy
+pandas
+matplotlib
+PyYAML
 requests
-pyyaml
+scipy
 tqdm
 seaborn
-psutil
-scipy
+
+# Streamlit app
+streamlit
